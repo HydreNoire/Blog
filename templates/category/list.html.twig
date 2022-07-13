@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Category |
+	{{cat.name}}
+{% endblock %}
+
+{% block imgheader %}url('/assets/img/post-bg.jpg')
+{% endblock %}
+
+{% block headerTitle %}
+	<h1>Category</h1>
+{% endblock %}
+
+
+{% block content %}
+
+	<a href="{{path('cat.index')}}" class="bg-primary text-light p-1 rounded mx-auto my-3 w-25 d-flex justify-content-center">{{category.name}}</a>
+
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+
+				{% for post in posts %}
+					<div class="post-preview">
+						<a href="{{path('post.show', {'id': post.id})}}">
+							<h2 class="post-title">{{post.title}}</h2>
+							<a href="#" class="bg-primary text-light p-1 rounded">{{category.name}}</a>
+							<h3 class="post-subtitle">{{post.description}}</h3>
+						</a>
+						<p class="post-meta">
+							Posted by
+							<a href="#!">Start Bootstrap</a>
+							{{post.createdAt|date("m/d/Y")}}
+						</p>
+					</div>
+					<hr class="my-4"/>
+				{% endfor %}
+
+				<div class="d-flex justify-content-end mb-4">
+					<a class="btn btn-primary text-uppercase" href="#">Older Posts →</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

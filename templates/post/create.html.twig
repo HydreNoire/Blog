@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Make A Post | Blog
+{% endblock %}
+
+{% block imgheader %}url('/assets/img/post-sample-image.jpg')
+{% endblock %}
+
+{% block headerTitle %}
+	Post your imagination
+{% endblock %}
+
+{% block subheading %}
+	Say what you want and post it !
+{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block content %}
+	<main class="mb-4">
+		<div class="container px-4 px-lg-5" style='font-family: " open sans", -apple-system, blinkmacsystemfont, " segoe ui", roboto, " helvetica neue", arial, sans-serif, " apple color emoji", " segoe ui emoji", " segoe ui symbol", " noto color emoji";'>
+
+			{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="my-4">
+				{{ form_label(form.title) }}
+				{{ form_errors(form.title) }}
+				{{ form_widget(form.title) }}
+				{{ form_help(form.title) }}
+			</div>
+			<div class="my-4">
+				{{ form_label(form.description) }}
+				{{ form_errors(form.description) }}
+				{{ form_widget(form.description) }}
+				{{ form_help(form.description) }}
+			</div>
+			<div class="my-4">
+				{{ form_label(form.content) }}
+				{{ form_errors(form.content) }}
+				{{ form_widget(form.content) }}
+				{{ form_help(form.content) }}
+			</div>
+			{{ form_end(form) }}
+
+		</div>
+	</main>
+{% endblock %}

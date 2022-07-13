@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Categories | Blog
+{% endblock %}
+
+{% block imgheader %}url('/assets/img/post-bg.jpg')
+{% endblock %}
+
+{% block headerTitle %}
+	<h1>Categories</h1>
+{% endblock %}
+
+
+{% block content %}
+
+	{% for cat in cats %}
+		<div class="d-flex justify-content-center align-items-center mx-auto my-3">
+			<a href="{{path('cat.list', {'id': cat.id})}}" class="btn btn-primary text-light rounded w-25">{{cat.name}}</a>
+			<a href="{{path('cat.delete', {'id': cat.id})}}" onclick="return confirm('Are you sure to delete?')" class="btn btn-danger rounded">DELETE</a>
+		</div>
+	{% endfor %}
+
+	<form action="{{path('cat.create')}}" method='POST'>
+		<button class="btn btn-primary rounded d-flex justify-content-center mx-auto">Create a new category</button>
+	</form>
+
+{% endblock %}

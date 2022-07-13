@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block headerTitle %}Register
+{% endblock %}
+
+{% block content %}
+	<div class="w-50 m-auto">
+		{{ form_start(registrationForm) }}
+		{{ form_row(registrationForm.username) }}
+		{{ form_row(registrationForm.email) }}
+		{{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+		{# {{ form_row(registrationForm.agreeTerms) }} #}
+
+		<button type="submit" class="btn btn-primary rounded">Register</button>
+		{{ form_end(registrationForm) }}
+	</div>
+{% endblock %}
