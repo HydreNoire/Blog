@@ -2,20 +2,20 @@
 
 {% block title %}
 	Category |
-	{{cat.name}}
+	{{category.name}}
 {% endblock %}
 
 {% block imgheader %}url('/assets/img/post-bg.jpg')
 {% endblock %}
 
 {% block headerTitle %}
-	<h1>Category</h1>
+	<h1>{{category.name}}</h1>
 {% endblock %}
 
 
 {% block content %}
 
-	<a href="{{path('cat.index')}}" class="bg-primary text-light p-1 rounded mx-auto my-3 w-25 d-flex justify-content-center">{{category.name}}</a>
+	<a href="{{path('cat.index')}}" class="bg-danger text-light p-1 rounded mx-auto my-3 w-25 d-flex justify-content-center">Return</a>
 
 	<div class="container px-4 px-lg-5">
 		<div class="row gx-4 gx-lg-5 justify-content-center">

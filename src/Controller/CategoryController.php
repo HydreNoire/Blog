@@ -41,6 +41,7 @@ class CategoryController extends AbstractController
      #[Route('/category/create', name: 'cat.create', methods: ['POST', 'GET'])]
     public function create(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $category = new Category();
 
         $form = $this->createForm(CategoryType::class, $category);
