@@ -23,7 +23,7 @@
 
 <body>
 	<!-- Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+	<nav class="bg-dark navbar navbar-expand-lg navbar-light" id="mainNav">
 		<div class="container px-4 px-lg-5">
 			<a class="navbar-brand" href="{{path('post_home')}}">Start Bootstrap</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,11 +42,13 @@
 						<li class="nav-item">
 							<a class="nav-link px-lg-3 py-3 py-lg-4" href="{{path('cat.index')}}">Categories</a>
 						</li>
+						{% else %}
 					{% endif %}
-					{% if is_granted('ROLE_EDITOR') %}
+					{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a class="nav-link px-lg-3 py-3 py-lg-4" href="{{path('post_create')}}">Make a Post</a>
 						</li>
+						{% else %}
 					{% endif %}
 					<li class="nav-item">
 						<a class="nav-link px-lg-3 py-3 py-lg-4" href="{{path('home_contact')}}">Contact</a>
@@ -54,9 +56,6 @@
 					{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a class="nav-link px-lg-3 py-3 py-lg-4 btn btn-secondary rounded" href="{{path('admin')}}">Dashboard</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link px-lg-3 py-3 py-lg-4 ms-2 btn btn-secondary rounded" href="{{path('app_user')}}">My Account</a>
 						</li>
 					{% elseif is_granted('ROLE_USER') %}
 						<li class="nav-item">
@@ -83,17 +82,22 @@
 			</div>
 		</body>
 	</body>
-</body></body></div></nav><!-- Page Header--><header class="masthead" style="background-image: {% block imgheader %}url('assets/img/home-bg.jpg'){% endblock %}"><div class="container position-relative px-4 px-lg-5"><div class="row gx-4 gx-lg-5 justify-content-center">
-<div class="col-md-10 col-lg-8 col-xl-7">
-	<div class="page-heading">
-		<h2>
-			{% block headerTitle %}{% endblock %}
-		</h2>
-		<h5 class="subheading"> {% block subheading %}{% endblock %}
-			</h5>
-		</div>
-	</div>
-</div></div></header>{% block content %}{% endblock %}<footer class="border-top"><div class="container px-4 px-lg-5">
+</body></body>
+</div>
+</nav>
+
+<div class="mt-5 pt-5 container bg-dark">
+	<ul class="d-flex justify-content-center list-unstyled">
+		<li class="m-2"><a href="{{path("app_user")}}" class="text-light btn">My Profile</a></li>
+		<li class="m-2"><a href="{{path("app_edit")}}" class="text-light btn btn-primary rounded">Modify your profile</a></li>
+		<li class="m-2"><a href="{{path("app_edit_password")}}" class="text-light btn btn-primary rounded">Modify your password</a></li>
+		<li class="m-2"><a href="{{path("user_delete")}}" onclick="return confirm('Are you sure to delete your account?')" class="text-light btn btn-danger rounded">Delete your account</a></li>
+	</ul>
+</div>
+
+{% block content %}{% endblock %}
+
+<footer class="border-top"><div class="container px-4 px-lg-5">
 <div class="row gx-4 gx-lg-5 justify-content-center">
 	<div class="col-md-10 col-lg-8 col-xl-7">
 		<ul class="list-inline text-center">

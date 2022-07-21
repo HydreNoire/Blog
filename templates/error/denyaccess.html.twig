@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Deny Access | Blog
+{% endblock %}
+
+{% block imgheader %}
+  url('assets/img/about-bg.jpg')
+{% endblock %}
+
+{% block headerTitle %}
+  HTTP 403 Forbidden
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center text-danger">
+    You can't have access to this page
+  </h1>
+{% endblock %}

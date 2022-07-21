@@ -1,19 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'users.html.twig' %}
 
 {% block title %}
-	My Account | Blog
+  My Account | Blog
 {% endblock %}
 
-{% block imgheader %}url('/assets/img/post-sample-image.jpg')
+{% block content %}
+  <div class="w-75 m-auto">
+    {% for message in app.flashes('message') %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+    <div class="row">
+      <fieldset class="col p-2">
+        <legend>
+          Profile of
+        </legend>
+        <p class="fs-3 fw-bold">
+          {{ app.user.username }}
+        </p>
+        <p>
+          Your email : <span class="fs-3 fw-bold">{{ app.user.email }}</span>
+        </p>
+      </fieldset>
+      <fieldset class="col bg-primary text-light p-2 rounded-3">
+        <legend>
+          Your personnal info:
+        </legend>
+        <p class="fs-3 fw-bold">
+          {{ app.user.name }}
+          {{ app.user.lastname }}
+        </p>
+        <p>
+          Your address :
+          <span class="fs-3 fw-bold">{{ app.user.adress }}</span>
+        </p>
+        <p>
+          Your city :
+          <span class="fs-3 fw-bold">
+            {{ app.user.zipcode }}
+            {{ app.user.city }}
+          </span>
+        </p>
+      </fieldset>
+    </div>
+  </div>
 {% endblock %}
-
-{% block headerTitle %}
-	Your Account
-{% endblock %}
-
-{% block subheading %}
-	Did you want to change something ?
-{% endblock %}
-
-
-{% block content %}{% endblock %}

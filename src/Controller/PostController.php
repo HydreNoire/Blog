@@ -38,6 +38,7 @@ class PostController extends AbstractController
     #[Route('/post/create', name: 'post_create', methods: ['POST', 'GET'])]
     public function create(Request $request): Response
     {
+        if ($this->isGranted('ROLE_EDITOR')){
         $post = new Post();
 
         $form = $this->createForm(PostType::class, $post);
@@ -50,5 +51,8 @@ class PostController extends AbstractController
         }
 
         return $this->renderForm('post/create.html.twig', ["form" => $form]);
+    } elseif ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('deny_access');
+        }
     }
 }
