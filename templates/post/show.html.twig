@@ -1,55 +1,130 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Post Details | Blog
+  {{ post.title }} | Blog
 {% endblock %}
 
-{% block imgheader %}url('/assets/img/post-bg.jpg')
+{% block imgheader %}
+  url('/assets/img/post-bg.jpg')
 {% endblock %}
 
 {% block headerTitle %}
-	{% if app.user %}
-		{{post.title}}
-	{% else %}
-		<h2>You need to register</h2>
-	{% endif %}
+  {% if app.user %}
+    {{ post.title }}
+  {% else %}
+    <h2>
+      You need to register
+    </h2>
+  {% endif %}
 {% endblock %}
 
 {% block subheading %}
-	{% if app.user %}
-		{{post.description}}
-		<br>
-		<br>
-		<a href="{{path('cat.list', {'id': post.category.id})}}" class="bg-primary text-light p-1 rounded my-1">{{post.category.name}}</a>
-	{% else %}
-		<h2>Register now</h2>
-		<br>
-		<a href="{{path('app_register')}}" class="bg-primary text-light p-1 rounded my-1">Register now!</a>
-		<span class="text-light">or</span>
-		<a href="{{path('app_login')}}" class="bg-primary text-light p-1 rounded my-1">Log in!</a>
-	{% endif %}
+  {% if app.user %}
+    {{ post.description }}
+    <br />
+    <br />
+    <a href="{{
+      path(
+        'cat.list',
+        {
+          id: post.category.id
+        }
+      )
+      }}"
+      class="bg-primary text-light p-1 rounded my-1">
+      {{ post.category.name }}
+    </a>
+  {% else %}
+    <h2>
+      Register now
+    </h2>
+    <br />
+    <a href="{{ path('app_register') }}"
+      class="bg-primary text-light p-1 rounded my-1">
+      Register now!
+    </a>
+    <span class="text-light">or</span>
+    <a href="{{ path('app_login') }}"
+      class="bg-primary text-light p-1 rounded my-1">
+      Log in!
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-	<article class="mb-4">
-		<div class="container px-4 px-lg-5">
-			<div class="row gx-4 gx-lg-5 justify-content-center">
+  <article class="mb-4">
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          {% if app.user %}
+            <p>
+              <div class="text-center mb-3">
+                <i class="fa-solid fa-heart fs-1"></i>
+                <p class="m-0">
+                  0 likes
+                </p>
+              </div>
+              {{ post.content }}
+            </p>
 
+            <p>
+              Placeholder text by
+              <a href="http://spaceipsum.com/">Space Ipsum</a>
+              &middot; Images by
+              <a href="https://www.flickr.com/photos/nasacommons/">
+                NASA on The Commons
+              </a>
+            </p>
 
-				<div class="col-md-10 col-lg-8 col-xl-7">
-					{% if app.user %}
-						<p>{{post.content}}</p>
-						<p>
-							Placeholder text by
-							<a href="http://spaceipsum.com/">Space Ipsum</a>
-							&middot; Images by
-							<a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
-						</p>
-					{% else %}
-						<h1>Vous devez être connecté pour accéder au détails de nos posts</h1>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</article>
+            <h3>
+              {{ post.comments|length }} commentaire(s)
+            </h3>
+            <hr />
+
+            <div class="my-3">
+              {{ form(formCom) }}
+            </div>
+            <hr />
+
+            {% for com in post.comments %}
+              <div class="row my-2">
+                <div class="col">
+                  <div class="fw-bolder">
+                    {{ com.user.username }}
+                    <small class="text-secondary">
+                      {{ com.createdAt|date('m/d/Y - H:i') }}
+                    </small>
+                  </div>
+                  {{ com.content }}
+                </div>
+                {% if com.user.id == app.user.id or is_granted('ROLE_EDITOR') %}
+                  <div class="col">
+                    <a class="btn btn-danger rounded-3"
+                      href="{{
+                      path(
+                        'comment_delete',
+                        {
+                          commentId: com.id,
+                          postId: post.id
+                        }
+                      )
+                      }}">
+                      Delete
+                    </a>
+                  </div>
+                {% else %}
+
+                {% endif %}
+              </div>
+              <hr />
+            {% endfor %}
+          {% else %}
+            <h1>
+              Vous devez être connecté pour accéder au détails de nos posts
+            </h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </article>
 {% endblock %}

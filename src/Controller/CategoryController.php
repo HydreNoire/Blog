@@ -76,7 +76,7 @@ class CategoryController extends AbstractController
         }
     }
 
-    #[Route('/category/create/error', name: 'deny_access')]
+    #[Route('/error/404', name: 'deny_access')]
     public function deny(): Response
     {
         return $this->render('error/denyaccess.html.twig');

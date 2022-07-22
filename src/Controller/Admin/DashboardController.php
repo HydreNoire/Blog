@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -52,7 +53,8 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Add Category', 'fas fa-plus', Category::class)->setAction(Crud::PAGE_NEW)
             ]);
             yield MenuItem::subMenu('Posts', 'fa fa-file-text')->setSubItems([
-                MenuItem::linkToCrud('All Post', 'fa fa-file-text', Post::class)->setAction(Crud::PAGE_INDEX),
+                MenuItem::linkToCrud('All Posts', 'fa fa-file-text', Post::class)->setAction(Crud::PAGE_INDEX),
+                MenuItem::linkToCrud('All Comments', 'fa fa-file-text', Comment::class),
                 MenuItem::linkToCrud('Add Post', 'fa fa-file-text', Post::class)->setAction(Crud::PAGE_NEW)
             ]);
 

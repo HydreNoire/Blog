@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
+use App\Form\CommentType;
 use App\Form\PostType;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\DateImmutableType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,44 +17,58 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     private PostRepository $repo;
-    public function __construct(PostRepository $repo)
+    private CommentRepository $commentRepo;
+    public function __construct(PostRepository $repo, CommentRepository $commentRepo)
     {
         $this->repo = $repo;
+        $this->commentRepo = $commentRepo;
     }
 
     #[Route('/', name: 'post_home')]
     public function index(): Response
     {
         $posts = $this->repo->findAll();
-        return $this->render('post/index.html.twig', [ 'posts' => $posts ]);
+        return $this->render('post/index.html.twig', ['posts' => $posts]);
     }
-    
-    #[Route('/post/details/{id}', name: 'post.show')]
-    public function show(int $id): Response
-    {
-        $post = $this->repo
-        ->find($id);
 
-        return $this->render('post/show.html.twig', [ "post" => $post ]);
+    #[Route('/post/details/{id}', name: 'post.show')]
+    public function show(int $id, Request $request): Response
+    {
+        $post = $this->repo->find($id);
+        $user = $this->getUser();
+
+        $comment = new Comment();
+        $formCom = $this->createForm(CommentType::class, $comment);
+        $formCom->handleRequest($request);
+
+        if ($formCom->isSubmitted() && $formCom->isValid()) {
+                $comment->setCreatedAt(new \DateTimeImmutable())->setUser($user)->setPost($post);
+                $this->commentRepo->add($comment, true);
+                return $this->redirectToRoute('post.show', ['id' => $post->getId()]);
+            }
+
+        return $this->renderForm('post/show.html.twig', ['post' => $post, "formCom" => $formCom, "comment" => $comment]);
     }
 
     #[Route('/post/create', name: 'post_create', methods: ['POST', 'GET'])]
     public function create(Request $request): Response
     {
-        if ($this->isGranted('ROLE_EDITOR')){
-        $post = new Post();
+        if ($this->isGranted('ROLE_EDITOR')) {
+            $post = new Post();
 
-        $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
+            $form = $this->createForm(PostType::class, $post);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setCreatedAt(new \DateTimeImmutable);
-            $this->repo->add($post, true);
-            return $this->redirectToRoute('post_home');
-        }
+            if ($form->isSubmitted() && $form->isValid()) {
+                $post->setCreatedAt(new \DateTimeImmutable());
+                $this->repo->add($post, true);
+                return $this->redirectToRoute('post_home');
+            }
 
-        return $this->renderForm('post/create.html.twig', ["form" => $form]);
-    } elseif ($this->isGranted('ROLE_USER')) {
+            return $this->renderForm('post/create.html.twig', [
+                'form' => $form,
+            ]);
+        } elseif ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('deny_access');
         }
     }

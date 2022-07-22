@@ -44,11 +44,19 @@
                 {{ post.description }}
               </h3>
             </a>
-            <p class="post-meta">
-              Posted by
-              <a href="#!">Start Bootstrap</a>
-              {{ post.createdAt|date('m/d/Y') }}
-            </p>
+            <div class="post-meta d-flex justify-content-between align-items-center">
+              <p>
+                Posted by
+                <a href="#!">Start Bootstrap</a>
+                {{ post.createdAt|date('m/d/Y') }}
+              </p>
+              <div class="text-center">
+                <i class="fa-solid fa-heart fs-1"></i>
+                <p class="m-0">
+                  0 likes
+                </p>
+              </div>
+            </div>
           </div>
           <hr class="my-4" />
         {% endfor %}
