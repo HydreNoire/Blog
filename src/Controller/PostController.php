@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Like;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
+use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\DateImmutableType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,5 +74,53 @@ class PostController extends AbstractController
         } elseif ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('deny_access');
         }
+    }
+
+    /**
+     * Permet de like et unlike un post
+     *
+     * @param Post $post
+     * @param ObjectManager $manager
+     * @param LikeRepository $likerepo
+     * @return Response
+     */
+    #[Route('/post/{id}/like', name: 'post_like')]
+    public function like(Post $post, EntityManagerInterface $entitymanager, LikeRepository $likerepo) : Response
+    {
+        $user = $this->getUser();
+
+        if(!$user) return $this->json([
+            'code' => 403,
+            'message' => 'You need to be connected to like post'
+        ], 403);
+
+        if($post->isLikedByUser($user)) {
+            $like = $likerepo->findOneBy([
+                'post' => $post,
+                'user' => $user
+            ]);
+
+            $entitymanager->remove($like);
+            $entitymanager->flush();
+
+            return $this->json([
+                'code' => 200,
+                'message' => 'Like supp',
+                'likes' => $likerepo->count(['post' => $post])
+            ], 200);
+        }
+
+        $like = new Like();
+        $like->setPost($post)
+            ->setUser($user);
+        
+        $entitymanager->persist($like);
+        $entitymanager->flush();
+
+        return $this->json([
+            'code' => 200, 
+            'message' => 'Ca marche',
+            'likes' => $likerepo->count(['post' => $post])
+            ], 200);
     }
 }

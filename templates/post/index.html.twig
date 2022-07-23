@@ -50,11 +50,18 @@
                 <a href="#!">Start Bootstrap</a>
                 {{ post.createdAt|date('m/d/Y') }}
               </p>
-              <div class="text-center">
-                <i class="fa-solid fa-heart fs-1"></i>
-                <p class="m-0">
-                  0 likes
-                </p>
+              <div class="text-center text-secondary">
+                <a href="#" class="btn btn-link p-0 js-like">
+                  {% if app.user and post.isLikedByUser(app.user) %}
+                    <i class="fa-solid fa-heart fs-1" style="color: red;"></i>
+                  {% else %}
+                    <i class="fa-solid fa-heart fs-1"></i>
+                  {% endif %}
+
+                  <p class="m-0 js-likes">
+                    {{ post.likes|length }} like(s)
+                  </p>
+                </a>
               </div>
             </div>
           </div>
