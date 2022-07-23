@@ -59,10 +59,26 @@
           {% if app.user %}
             <p>
               <div class="text-center text-secondary mb-3">
-                <i class="fa-solid fa-heart fs-1"></i>
-                <p class="m-0">
-                  0 likes
-                </p>
+                <a href="{{
+                  path(
+                    'post_like',
+                    {
+                      id: post.id
+                    }
+                  )
+                  }}"
+                  class="btn btn-link p-0 js-like">
+                  {% if post.isLikedByUser(app.user) %}
+                    <span class="fs-1 star" style="color: yellow;">
+                      &starf;
+                    </span>
+                  {% else %}
+                    <span class="fs-1 star" style="color: grey;">&starf;</span>
+                  {% endif %}
+
+                  <span class="m-0 js-likes">{{ post.likes|length }}</span>
+                  <span>like(s)</span>
+                </a>
               </div>
               {{ post.content }}
             </p>
@@ -127,4 +143,24 @@
       </div>
     </div>
   </article>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function onClickBtnLike(event) { event.preventDefault();
+
+    const url = this.href; const likeCount =
+    this.querySelector('span.js-likes'); const iconLike =
+    document.querySelector('.fa-heart'); console.log(iconLike)
+    axios.get(url).then(function(response) { likeCount.textContent =
+    response.data.likes;
+
+    if(iconLike.classList.contains('fa-solid')) {
+    iconLike.classList.replace('fa-solid', 'fa-regular'); } else {
+    iconLike.classList.replace('fa-regular', 'fa-solid'); } }) }
+
+    document.querySelectorAll('a.js-like').forEach(function(link){
+    link.addEventListener('click', onClickBtnLike) });
+  </script>
 {% endblock %}
