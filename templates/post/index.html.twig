@@ -61,13 +61,13 @@
                   }}"
                   class="btn btn-link p-0 js-like">
                   {% if app.user and post.isLikedByUser(app.user) %}
-                    {# <i class="fa-solid fa-heart fs-1"></i> #}
-                    <span class="fs-1 star" style="color: yellow;">
+                    <span class="fs-1 star" style="color: rgb(255, 255, 0);">
                       &starf;
                     </span>
                   {% else %}
-                    {# <i class="fa-regular fa-heart fs-1"></i> #}
-                    <span class="fs-1 star" style="color: grey;">&starf;</span>
+                    <span class="fs-1 star" style="color: rgb(128, 128, 128);">
+                      &starf;
+                    </span>
                   {% endif %}
 
                   <span class="m-0 js-likes">{{ post.likes|length }}</span>
@@ -89,22 +89,5 @@
 
 {% block javascripts %}
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const axios = require('axios').default; function onClickBtnLike(event) {
-    event.preventDefault();
-
-    const url = this.href; const likeCount =
-    this.querySelector('span.js-likes'); const iconLike =
-    this.querySelectorAll('span.star'); console.log(iconLike)
-    axios.get(url).then(function(response) { likeCount.textContent =
-    response.data.likes;
-
-    if(iconLike.style.color = "yellow") { iconLike.style.color = "grey"; } else
-    { iconLike.style.color = "yellow"; } }).catch(function(e) {
-    if(e.response.status === 403) { alert("You can't like if you're not
-    connected"); } else { alert("Errors occurs, try again later"); } }) }
-
-    document.querySelectorAll('a.js-like').forEach(function(link){
-    link.addEventListener('click', onClickBtnLike) });
-  </script>
+  <script src="{{ asset('js/app.js') }}"></script>
 {% endblock %}

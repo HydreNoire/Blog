@@ -1,0 +1,20 @@
+Dans SYMPHONY
+
+# CommentController 
+route -> comment/create
+methode -> function create(){ : Response
+    ['name' => 'test']
+
+    return $this->json();
+}
+
+Dans JAVASCRIPT
+
+fetch('/create')
+    .then(function(res) {
+        return res.json();
+    }).then(function(data) {
+        console.log(data)
+    }).catch(function(error) {
+        console.log(error)
+    })
