@@ -31,3 +31,15 @@ function onClickBtnLike(event) {
 document.querySelectorAll('a.js-like').forEach(function (link) {
     link.addEventListener('click', onClickBtnLike)
 });
+
+let comment = document.getElementById('comment');
+let postId = comment.getAttribute('data-id');
+
+fetch('/post/details/' + postId + '/comment/create')
+    .then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        console.log(data)
+    }).catch(function (error) {
+        console.log(error)
+    })

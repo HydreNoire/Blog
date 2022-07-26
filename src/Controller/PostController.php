@@ -44,11 +44,11 @@ class PostController extends AbstractController
         $formCom = $this->createForm(CommentType::class, $comment);
         $formCom->handleRequest($request);
 
-        if ($formCom->isSubmitted() && $formCom->isValid()) {
-                $comment->setCreatedAt(new \DateTimeImmutable())->setUser($user)->setPost($post);
-                $this->commentRepo->add($comment, true);
-                return $this->redirectToRoute('post.show', ['id' => $post->getId()]);
-            }
+        // if ($formCom->isSubmitted() && $formCom->isValid()) {
+        //         $comment->setCreatedAt(new \DateTimeImmutable())->setUser($user)->setPost($post);
+        //         $this->commentRepo->add($comment, true);
+        //         return $this->redirectToRoute('post.show', ['id' => $post->getId()]);
+        //     }
 
         return $this->renderForm('post/show.html.twig', ['post' => $post, "formCom" => $formCom, "comment" => $comment]);
     }

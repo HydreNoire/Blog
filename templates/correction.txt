@@ -1,16 +1,28 @@
 Dans SYMPHONY
 
 # CommentController 
-route -> comment/create
+route -> comment/create/{postId}
 methode -> function create(){ : Response
-    ['name' => 'test']
+    $post = $postRepo->find(postId);
+    $comments = $post->getComments();
+    $allComments = [];
 
-    return $this->json();
+    foreach($comments as $comment) {
+        $allComments = [
+            "id" => $comments->getId(),
+            "content" => $comments->getContent()
+        ]
+    }
+
+    return $this->json($allComments);
 }
 
 Dans JAVASCRIPT
 
-fetch('/create')
+let comment = document.getElementById('comment');
+let postId = comment.getAttribute('data-id');
+
+fetch('/create' + postId)
     .then(function(res) {
         return res.json();
     }).then(function(data) {
@@ -18,3 +30,14 @@ fetch('/create')
     }).catch(function(error) {
         console.log(error)
     })
+
+Dans TWIG
+
+<textarea id="comment" data-id="{{ post.id }}"></textarea>
+
+{% for ... %}
+<div class="comment">
+    <p>NOM</p>
+    <div>CONTENT</div>
+</div>
+{% endfor %}
