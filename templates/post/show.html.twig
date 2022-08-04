@@ -93,17 +93,18 @@
             </p>
 
             <h3>
-              {{ post.comments|length }} commentaire(s)
+              <span id="js-count-comm">{{ post.comments|length }}</span> commentaire(s)
             </h3>
             <hr />
 
-            <div class="my-3">
+            <div class="my-3 formCom" data-id="{{ post.id }}">
               {{ form(formCom) }}
             </div>
             <hr />
+            <div class="js-com-container"></div>
 
             {% for com in post.comments %}
-              <div class="row my-2">
+              <div class="row my-2 comment">
                 <div class="col">
                   <div class="fw-bolder">
                     {{ com.user.username }}

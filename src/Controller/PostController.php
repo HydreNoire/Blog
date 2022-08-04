@@ -35,7 +35,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/post/details/{id}', name: 'post.show')]
-    public function show(int $id, Request $request): Response
+    public function show($id, Request $request): Response
     {
         $post = $this->repo->find($id);
         $user = $this->getUser();

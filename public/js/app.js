@@ -32,14 +32,51 @@ document.querySelectorAll('a.js-like').forEach(function (link) {
     link.addEventListener('click', onClickBtnLike)
 });
 
-let comment = document.getElementById('comment');
-let postId = comment.getAttribute('data-id');
+// ============== GESTION COMMENTAIRE =======================
+let postId = document.querySelector('.formCom').getAttribute('data-id');
+let content = document.querySelector('#comment_content');
+let containerCom = document.querySelector('.comment');
+let nbComm = document.querySelector('#js-count-comm');
 
-fetch('/post/details/' + postId + '/comment/create')
-    .then(function (res) {
-        return res.json();
-    }).then(function (data) {
-        console.log(data)
-    }).catch(function (error) {
-        console.log(error)
+// Event Listener
+document.querySelector('.buttonSend').addEventListener('click', sendComm)
+
+// Fonction SendComm utilisé pour l'event
+function sendComm() {
+    fetch('/post/details/comment/' + postId, {
+        method: "POST",
+        headers: { 'content-type': 'Application/json' },
+        body: JSON.stringify({
+            'content': content.value,
+        })
     })
+        .then(function (res) {
+            return res.json();
+        }).then(function (data) {
+            nbComm.textContent = data.numberOfComm;
+
+            let comment = document.createElement("p");
+            comment.classList.add("js-comment");
+
+            if (data.userRole.includes('ROLE_EDITOR',) || data.userRole.includes('ROLE_ADMIN') || data.currentUserUsername === data.user) {
+                comment.innerHTML = "<div class='fw-bolder'>" + data.user + "<small class='ms-3'>" + data.createAt + "</small></div> <div>" + data.content + "</div>  <button class='btn btn-danger rounded-3 js-remove-comment' comment-id='{{ comment.id }}'>Delete</button>"
+            } else {
+                comment.innerHTML = "<div class='fw-bolder'>" + data.user + "<small class='ms-3'>" + data.createAt + "</small></div> <div>" + data.content + "</div>"
+            }
+
+            containerCom.prepend(comment);
+
+            content.value = "";
+
+            console.log(data)
+        }).catch(function (error) {
+            console.log(error);
+        })
+}
+// ===== SUPPRIMER COMMENTAIRE
+// Event Listener
+// document.querySelector('.js-remove-comment').addEventListener('click', removeComm)
+
+// // Fonction SendComm utilisé pour l'event
+// function removeComm() {
+// }

@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -23,8 +24,9 @@ class CommentType extends AbstractType
             ])
             ->add('post', HiddenType::class)
             ->add('user', HiddenType::class)
-            ->add('submit', SubmitType::class, [
-                "label" => "Add a comment"
+            ->add('submit', ButtonType::class, [
+                "label" => "Add a comment",
+                'attr' => ['class' => 'buttonSend']
             ])
         ;
     }
